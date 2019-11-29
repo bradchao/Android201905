@@ -19,14 +19,18 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLeft,btnRight;
     private Timer timer;
     private int i;
+    private UIHandler uiHandler;
+    private TextView clock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        uiHandler = new UIHandler();
         timer = new Timer();
         timer.schedule(new MyTask(), 0, 10);
+        clock = findViewById(R.id.clock);
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
         if (isRunning){
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (isRunning) {
                 i++;
+                uiHandler.sendEmptyMessage(0);
             }
         }
     }
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-
+            clock.setText("" +i);
         }
     }
 
