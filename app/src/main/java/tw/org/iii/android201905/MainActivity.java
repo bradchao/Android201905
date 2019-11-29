@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
     private void doReset(){
-
+        i = 0; uiHandler.sendEmptyMessage(0);
+        data.clear(); adapter.notifyDataSetChanged();
     }
     public void clickRight(View view) {
         isRunning = !isRunning;
