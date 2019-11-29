@@ -17,12 +17,16 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private boolean isRunning;
     private Button btnLeft,btnRight;
+    private Timer timer;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        timer = new Timer();
+        timer.schedule(new MyTask(), 0, 10);
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
         if (isRunning){
@@ -32,6 +36,33 @@ public class MainActivity extends AppCompatActivity {
             btnLeft.setText("Reset");
             btnRight.setText("START");
         }
+    }
+
+    private class MyTask extends TimerTask {
+        @Override
+        public void run() {
+            if (isRunning) {
+                i++;
+            }
+        }
+    }
+
+    private class UIHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+        }
+    }
+
+    @Override
+    public void finish() {
+        if (timer != null){
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+        super.finish();
     }
 
     public void clickLeft(View view) {
