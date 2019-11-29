@@ -56,8 +56,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            clock.setText("" +i);
+            clock.setText(toClockString());
         }
+    }
+
+    private String toClockString(){
+        int hs = i % 100;
+        int ts = i / 100;
+        int hh = ts / (60*60);
+        int mm = (ts - hh*60*60) / 60;
+        int ss = ts % 60;
+
+        return hh + ":" + mm + ":" + ss + "." + hs;
     }
 
     @Override
