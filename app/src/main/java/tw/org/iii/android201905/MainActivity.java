@@ -9,8 +9,12 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
     private int i;
     private UIHandler uiHandler;
     private TextView clock;
+
+    private ListView lapList;
+    private SimpleAdapter adapter;
+    private LinkedList<HashMap<String,String>> data;
+    private String[] from = {"title"};
+    private int[] to = {R.id.itemTitle};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             btnLeft.setText("Reset");
             btnRight.setText("START");
         }
+
+        lapList = findViewById(R.id.lap);
+        initListView();
+    }
+
+    private void initListView(){
+        data = new LinkedList<>();
+        adapter = new SimpleAdapter(this, data, R.layout.item, from, to);
+        lapList.setAdapter(adapter);
     }
 
     private class MyTask extends TimerTask {
@@ -81,6 +100,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickLeft(View view) {
+        if (isRunning){
+            // Lap
+            doLap();
+        }else{
+            // Reset
+            doReset();
+        }
+    }
+
+    private void doLap(){
+        HashMap<String,String> row = new HashMap<>();
+        row.put(from[0], clock.getText().toString());
+        data.add(0, row);
+        adapter.notifyDataSetChanged();
+    }
+    private void doReset(){
+
     }
     public void clickRight(View view) {
         isRunning = !isRunning;
